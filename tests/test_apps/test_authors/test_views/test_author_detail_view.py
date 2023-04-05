@@ -9,13 +9,13 @@ from rest_framework.response import Response
 from server.apps.author.models import Author
 
 
+@pytest.mark.django_db()
 class AuthorDetailViewTest(TestCase):
     def setup_class(self) -> None:
         self.author = Author.objects.create(surname='TestSurname', name='TestName', license_code='1234567890')
         self.url = reverse("authors:detail", kwargs={"pk": self.author.id})
 
 
-    @pytest.mark.django_db()
     def test_update_author(self):
         data = [
             ("name", "TestNewName"),
@@ -35,7 +35,6 @@ class AuthorDetailViewTest(TestCase):
             assert response.status_code == HTTPStatus.OK
             assert new_field_value == dict(response.data).get(field)
 
-    @pytest.mark.django_db()
     def test_delete_author(self):
         response: Response = self.client.delete(self.url)
         assert response.status_code == HTTPStatus.NO_CONTENT

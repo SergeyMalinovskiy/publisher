@@ -8,10 +8,10 @@ from rest_framework.response import Response
 from server.apps.author.models import Author
 
 
+@pytest.mark.django_db()
 class AuthorListViewTest(TestCase):
     url = reverse('authors:list')
 
-    @pytest.mark.django_db()
     def test_create_author(self):
         data = {
             "surname": "Test",
@@ -22,7 +22,6 @@ class AuthorListViewTest(TestCase):
 
         assert response.status_code == HTTPStatus.CREATED
 
-    @pytest.mark.django_db()
     def test_get_authors(self):
         response: Response = self.client.get(self.url)
 
