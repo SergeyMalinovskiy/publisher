@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from server.apps.author.models import Author
+from server.utils.decorators import LeastOneFieldRequired
 
 
 class AuthorModelSerializer(serializers.ModelSerializer):
@@ -24,18 +25,13 @@ class AuthorSerializer(serializers.Serializer):
         pass
 
 
+@LeastOneFieldRequired()
 class AuthorUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
 
     surname = serializers.CharField(required=False, allow_blank=True, max_length=255)
     name = serializers.CharField(required=False, allow_blank=True, max_length=255)
     license_code = serializers.CharField(required=False)
-
-    def validate(self, data):
-        if not any(data.values()):
-            raise serializers.ValidationError("Не передано не одно из полей для обновления")
-
-        return data
 
     def create(self, validated_data):
         pass

@@ -21,6 +21,7 @@ from server.apps.main.views import index
 
 from server.apps.author import  urls as author_urls
 from server.apps.books import  urls as books_urls
+from server.apps.publisher import  urls as publisher_urls
 
 admin.autodiscover()
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('main/', include(main_urls, namespace='main')),
     path('authors/', include(author_urls, namespace='authors')),
     path('books/', include(books_urls, namespace='books')),
+    path('publishers/', include(publisher_urls, namespace='publishers')),
 
     # Health checks:
     path('health/', include(health_urls)),
