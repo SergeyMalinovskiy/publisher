@@ -1,23 +1,42 @@
 from http import HTTPStatus
+from typing import Dict
 
 import pytest
 from django.test import Client
-from django.urls import reverse
 from rest_framework.response import Response
 
-
-@pytest.fixture
-def get_publisher_url():
-    return reverse('publishers:list')
+from server.apps.publisher.models import Publisher
 
 
-@pytest.mark.skip(reason='Not implemented')
-def test_create_publisher(client: Client, get_publisher_url):
-    publisher_data = {
-        "name": "test_publisher",
-        "org_site": "https://test_publisher.test",
-        "email": "test_publisher@mail.ru"
+@pytest.fixture()
+def get_publisher_data() -> Dict:
+    return {
+        'name': 'test_publisher',
+        'org_site': 'https://test-publisher123.com',
+        'email': 'test_publisher@mail.ru'
     }
-    response: Response = client.post(get_publisher_url, data=publisher_data)
+
+
+@pytest.fixture()
+def get_publisher(get_publisher_data):
+
+    publisher = Publisher.objects.create(**get_publisher_data)
+
+    yield publisher
+
+    publisher.delete()
+
+
+@pytest.mark.django_db()
+def test_create_publisher(client: Client, get_publisher_data):
+    response: Response = client.post('/publishers/', data=get_publisher_data)
 
     assert response.status_code == HTTPStatus.CREATED
+
+
+@pytest.mark.django_db()
+def test_list_publishers(client: Client, get_publisher):
+    response: Response = client.get('/publishers/')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.data.pop().get('id') == get_publisher.id
