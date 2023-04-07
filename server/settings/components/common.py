@@ -37,6 +37,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
     #drf
     'rest_framework',
+    'rest_framework.authtoken',
 
     # django-admin:
     'django.contrib.admin',
@@ -57,6 +58,9 @@ INSTALLED_APPS: Tuple[str, ...] = (
 MIDDLEWARE: Tuple[str, ...] = (
     # Logging:
     'server.settings.components.logging.LoggingContextVarsMiddleware',
+
+    # jwt-auth
+    # 'server.middlewares.auth_token_middleware.AuthTokenMiddleware',
 
     # Content Security Policy:
     'csp.middleware.CSPMiddleware',
@@ -213,3 +217,10 @@ EMAIL_TIMEOUT = 5
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# rest_framework
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'server.utils.auth.BearerAuthorization',
+#     ]
+# }

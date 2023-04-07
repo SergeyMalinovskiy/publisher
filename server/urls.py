@@ -15,6 +15,7 @@ from django.contrib.admindocs import urls as admindocs_urls
 from django.urls import include, path
 from django.views.generic import TemplateView
 from health_check import urls as health_urls
+from rest_framework.authtoken.views import obtain_auth_token
 
 from server.apps.main import urls as main_urls
 from server.apps.main.views import index
@@ -31,6 +32,8 @@ urlpatterns = [
     path('authors/', include(author_urls, namespace='authors')),
     path('books/', include(books_urls, namespace='books')),
     path('publishers/', include(publisher_urls, namespace='publishers')),
+
+    path('api-token-auth/', obtain_auth_token),
 
     # Health checks:
     path('health/', include(health_urls)),

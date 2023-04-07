@@ -1,18 +1,19 @@
-from rest_framework import viewsets, status
+from django.utils.decorators import method_decorator
+from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import permission_classes as permissions, authentication_classes as auth_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from server.apps.author.models import Author
-from server.apps.author.serializers import AuthorModelSerializer, AuthorSerializer, AuthorUpdateSerializer
+from server.apps.author.serializers import AuthorSerializer, AuthorUpdateSerializer
 from server.apps.author.repository import AuthorRepository
+from server.utils.decorators import TokenAuthenticatedOrReadOnly
 
 
-class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all()
-    serializer_class = AuthorModelSerializer
-
-
+@TokenAuthenticatedOrReadOnly()
 class AuthorListView(APIView):
 
     def get(self, request, format=None) -> Response:
@@ -32,6 +33,7 @@ class AuthorListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@TokenAuthenticatedOrReadOnly()
 class AuthorDetailView(APIView):
 
     def get(self, request: Request, pk, format=None):

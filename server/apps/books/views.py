@@ -3,16 +3,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from server.apps.books.serializers import BookModelSerializer, BookSerializer, BookUpdateSerializer
+from server.apps.books.serializers import BookSerializer, BookUpdateSerializer
 from server.apps.books.models import Book
 from server.apps.books.repository import BookRepository
+from server.utils.decorators import TokenAuthenticatedOrReadOnly
 
 
-class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
-    serializer_class = BookModelSerializer
-
-
+@TokenAuthenticatedOrReadOnly()
 class BookListView(APIView):
     def get(self, request: Request, format=None) -> Response:
         books = Book.objects.all()
@@ -31,6 +28,7 @@ class BookListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@TokenAuthenticatedOrReadOnly()
 class BookDetailView(APIView):
     def get(self, request: Request, pk, format=None):
         book = BookRepository().get_by_id(pk)

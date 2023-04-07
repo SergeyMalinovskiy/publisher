@@ -7,8 +7,10 @@ from rest_framework.viewsets import ModelViewSet
 
 from server.apps.publisher.models import Publisher
 from server.apps.publisher.serializers import PublisherModelSerializer, PublisherUpdateSerializer
+from server.utils.decorators import TokenAuthenticatedOrReadOnly
 
 
+@TokenAuthenticatedOrReadOnly()
 # Create your views here.
 class PublisherViewSet(ModelViewSet):
     queryset = Publisher.objects.all()
