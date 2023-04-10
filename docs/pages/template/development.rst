@@ -1,106 +1,105 @@
 Development
 ===========
 
-Our development process is focused on high quality and development comfort.
-We use tools that are proven to be the best in class.
+Наш процесс разработки ориентирован на высокое качество и удобство разработки.
+Мы используем инструменты, которые зарекомендовали себя как лучшие в своем классе.
 
-There are two possible ways to develop your apps.
+Существует два возможных способа разработки приложений.
 
-1. local development
-2. development inside ``docker``
+1. локальная разработка
+2. разработка с использованием ``docker``
 
-You can choose one or use both at the same time.
-How to choose what method should you use?
+Вы можете выбрать один из них или использовать оба одновременно.
+Как выбрать, какой метод использовать?
 
-Local development is much easier and much faster.
-You can choose it if you don't have too many infrastructure dependencies.
-That's a default option for the new projects.
+Локальная разработка намного проще и быстрее.
+Вы можете выбрать его, если у вас не слишком много инфраструктурных зависимостей.
+Это вариант по умолчанию для новых проектов.
 
-Choosing ``docker`` development means that you already have a complex
-setup of different technologies, containers, networks, etc.
-This is a default option for older and more complicated projects.
+Выбор разработки ``docker`` означает, что у вас уже есть сложная
+настройка различных технологий, контейнеров, сетей и т.д.
+Это вариант по умолчанию для старых и более сложных проектов.
 
 
-Dependencies
+Зависимости
 ------------
 
-We use ``poetry`` to manage dependencies.
-So, please do not use ``virtualenv`` or ``pip`` directly.
-Before going any further, please,
-take a moment to read the `official documentation <https://poetry.eustace.io/>`_
-about ``poetry`` to know some basics.
+Мы используем ``poetry`` для управления зависимостями.
+Поэтому, пожалуйста, не используйте ``virtualenv`` или ``pip`` напрямую.
+Прежде чем продолжить, пожалуйста,
+уделите время чтению официальной документации <https://poetry.eustace.io/>`_
+о ``poetry``, чтобы узнать некоторые основы.
 
-If you are using ``docker`` then prepend ``docker-compose run --rm web``
-before any of those commands to execute them.
+Если вы используете ``docker``, то добавьте ``docker-compose run --rm web``
+перед любой из этих команд, чтобы выполнить их.
 
-Please, note that you don't need almost all of them with ``docker``.
-You can just skip this sub-section completely.
-Go right to `Development with docker`_.
+Обратите внимание, что почти все эти команды не нужны при использовании ``docker``.
+Вы можете просто пропустить этот подраздел.
+Переходите сразу к ``Разработке с помощью docker``.
 
-Installing dependencies
+Установка зависимостей
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-You do not need to run any of these command for ``docker`` based development,
-since it is already executed inside ``Dockerfile``.
+Вам не нужно запускать ни одну из этих команд для разработки на базе ``docker``,
+поскольку они уже выполняются внутри ``Dockerfile``.
 
-Please, note that ``poetry`` will automatically create a ``virtualenv`` for
-this project. It will use you current ``python`` version.
-To install all existing dependencies run:
+Обратите внимание, что ``poetry`` автоматически создаст ``virtualenv`` для
+этого проекта. Он будет использовать текущую версию ``python``.
+Для установки всех существующих зависимостей выполните:
 
 .. code:: bash
 
   poetry install
 
-To install dependencies for production use, you will need to run:
+Чтобы установить зависимости для производственного использования, вам нужно выполнить:
 
 .. code:: bash
 
   poetry install --no-dev
 
-And to activate ``virtualenv`` created by ``poetry`` run:
+И чтобы активировать ``virtualenv``, созданный ``poetry``, выполните:
 
 .. code:: bash
 
   poetry shell
 
-Adding new dependencies
+Добавление новых зависимостей
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-To add a new dependency you can run:
+Чтобы добавить новые зависимости вы должны:
 
-- ``poetry add django`` to install ``django`` as a production dependency
-- ``poetry add --dev pytest`` to install ``pytest``
-  as a development dependency
+- ``poetry add django`` для установки ``django`` в качестве производственной зависимости
+- ``poetry add --dev pytest`` для установки ``pytest``
+  как зависимость для разработки
 
-This command might be used with ``docker``.
+Эта команда может быть использована вместе с ``docker``.
 
-Updating poetry version
+Обновление poetry зависимостей
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Package managers should also be pinned very strictly.
-We had a lot of problems in production
-because we were not pinning package manager versions.
+Менеджеры пакетов также должны быть прижаты очень строго.
+У нас было много проблем в разработке
+потому что мы не фиксировали версии менеджеров пакетов.
 
-This can result in broken ``lock`` files, inconsistent installation process,
-bizarre bugs, and missing packages. You do not want to experience that!
+Это может привести к повреждению файлов ``lock``, несовместимому процессу установки,
+странным ошибкам и отсутствию пакетов. Мы этого не хотим!
 
-How can we have the same ``poetry`` version for all users in a project?
-That's where ``[build-system]`` tag shines. It specifies the exact version of
-your ``poetry`` installation that must be used for the project.
-Version mismatch will fail your build.
+Как мы можем иметь одну и ту же версию ``poetry'' для всех пользователей в проекте?
+Вот здесь и пригодится тег ``[build-system]``. Он указывает точную версию
+вашей установки ``poetry``, которая должна использоваться для проекта.
+Несовпадение версий приведет к неудаче сборки.
 
-When you want to update ``poetry``, you have to bump it in several places:
+Когда вы хотите обновить ``poetry``, сделайте это в некоторых местах:
 
 1. ``pyproject.toml``
 2. ``docker/django/Dockerfile``
 
-Then you are fine!
 
 
-Development with docker
+Разработка с использованием docker
 -----------------------
 
-To start development server inside ``docker`` you will need to run:
+Чтобы запустить сервер разработки внутри ``docker``, вам нужно запустить:
 
 .. code:: bash
 
@@ -109,53 +108,51 @@ To start development server inside ``docker`` you will need to run:
   docker-compose run --rm web python manage.py migrate
   docker-compose up
 
-Running scripts inside docker
+Выполнение скриптов внутри docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As we have already mentioned inside the previous section
-we use ``docker-compose run`` to run scripts inside docker.
+Как мы уже упоминали в предыдущем разделе
+мы используем ``docker-compose run`` для запуска скриптов внутри docker.
 
-What do you need to know about it?
+Что нужно знать об этом?
 
-1. You can run anything you want: ``poetry``, ``python``, ``sh``, etc
-2. Most likely it will have a permanent effect, due to ``docker volumes``
-3. You need to use ``--rm`` to automatically remove this container afterward
+1. Вы можете запускать все, что хотите: ``poetry``, ``python``, ``sh`` и т.д.
+2. Скорее всего, это будет иметь постоянный эффект, из-за ``docker volumes``.
+3. Вам нужно использовать ``--rm``, чтобы автоматически удалить этот контейнер после этого
 
-**Note**: ``docker`` commands do not need to use ``virtualenv`` at all.
+**Note**: ``docker`` команды не используют ``virtualenv`` в нем.
 
-Local development
+Локальная разработка
 -----------------
 
-When cloning a project for the first time you may
-need to configure it properly,
-see :ref:`django` section for more information.
+При клонировании проекта в первый раз может потребоваться
+необходимо правильно его настроить,
+см. раздел :ref:`django` для получения дополнительной информации.
 
-**Note**, that you will need to activate ``virtualenv`` created
-by ``poetry`` before running any of these commands.
-**Note**, that you only need to run these commands once per project.
+**Обратите внимание**, что вам необходимо активировать ``virtualenv``, созданный
+созданную ``poetry`` перед выполнением любой из этих команд.
+**Примечание**, что эти команды нужно выполнять только один раз для каждого проекта.
 
-Local database
+Локальная БД
 ~~~~~~~~~~~~~~
 
-When using local development environment without ``docker``,
-you will need a ``postgres`` up and running.
-To create new development database run
-(make sure that database and user names are correct for your case):
+При использовании локальной среды разработки без ``docker``,
+вам потребуется запущенный ``postgres``.
+Для создания новой базы данных для разработки выполните
+(убедитесь, что имена базы данных и пользователя корректны для вашего случая):
 
 .. code:: bash
 
   psql postgres -U postgres -f scripts/create_dev_database.sql
 
-Then migrate your database:
+Для выполнении миграций
 
 .. code:: bash
 
   python manage.py migrate
 
-Running project
+Запуск проекта
 ~~~~~~~~~~~~~~~
-
-If you have reached this point, you should be able to run the project.
 
 .. code:: bash
 

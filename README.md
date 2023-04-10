@@ -11,7 +11,7 @@ This project was generated with [`wemake-django-template`](https://github.com/we
 
 ## Prerequisites
 
-You will need:
+Вам требуется:
 
 - `python3.9` (see `pyproject.toml` for full version)
 - `postgresql` with version `13`
@@ -20,14 +20,30 @@ You will need:
 
 ## Development
 
-When developing locally, we use:
+При разработке мы используем:
 
 - [`editorconfig`](http://editorconfig.org/) plugin (**required**)
 - [`poetry`](https://github.com/python-poetry/poetry) (**required**)
 - [`pyenv`](https://github.com/pyenv/pyenv)
 - `pycharm 2017+` or `vscode`
 
+после клонирования репозитория:
+
+Копируем файл настроек окружения, меняем DOMAIN_NAME, создаем DJANGO_SECRET_KEY
+```
+copy env.template to .env
+```
+
+Затем нужно запустить докер
+
+```
+export DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 # enable buildkit
+docker-compose build
+docker-compose run --rm web python manage.py migrate
+docker-compose up
+```
+
 
 ## Documentation
 
-Full documentation is available here: [`docs/`](docs).
+Полная документация доступна здесь: [`docs/`](docs).
