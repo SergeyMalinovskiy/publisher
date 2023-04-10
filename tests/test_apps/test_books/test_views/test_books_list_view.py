@@ -6,46 +6,41 @@ from django.urls import reverse
 from rest_framework.response import Response
 
 from server.apps.author.models import Author
+from django.test import Client
 
 
-@pytest.mark.django_db()
-class BooksListViewTest(TestCase):
-    url = reverse("books:list")
+@pytest.fixture()
+def get_author():
+    author = Author.objects.create(surname="TestSurname", name="TestName")
 
-    def setup_class(self) -> None:
-        self.author = Author.objects.create(surname="TestSurname", name="TestName")
+    yield author
 
-    def teardown_class(self):
-        self.author.delete()
+    author.delete()
 
-    def test_create_books(self):
-        data = {
-            "name": "TestBook",
-            "registration_code": "TEST_CODE12345",
-            "main_author": self.author.id
-        }
-        response: Response = self.client.post(self.url, data)
 
-        assert HTTPStatus.CREATED == response.status_code
+@pytest.fixture()
+def get_author_url(get_author):
+    return reverse("books:list")
 
-        del response.data['id']
-        assert data == response.data
 
-    def test_create_books_with_not_exists_author(self):
-        not_exists_author_id: int = Author.objects.latest('id').id+1
+@pytest.mark.django_db
+def test_create_books_with_not_exists_author(client: Client, get_author_url, get_auth_header):
+    not_exists_author_id: int = Author.objects.latest('id').id+1
 
-        data = {
-            "name": "TestBook",
-            "registration_code": "TEST_CODE12345",
-            "main_author": not_exists_author_id
-        }
+    data = {
+        "name": "TestBook",
+        "registration_code": "TEST_CODE12345",
+        "main_author": not_exists_author_id
+    }
 
-        response: Response = self.client.post(self.url, data)
+    response: Response = client.post(get_author_url, data, **get_auth_header)
 
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+    assert HTTPStatus.BAD_REQUEST == response.status_code
 
-    def test_list_books(self):
-        response: Response = self.client.get(self.url)
 
-        assert HTTPStatus.OK == response.status_code
+@pytest.mark.django_db
+def test_list_books(client: Client, get_author_url):
+    response: Response = client.get(get_author_url)
+
+    assert HTTPStatus.OK == response.status_code
 

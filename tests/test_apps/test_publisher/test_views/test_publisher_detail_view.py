@@ -28,21 +28,26 @@ def get_publisher():
 
 
 @pytest.mark.django_db
-def test_update_publisher(client: Client, get_publisher: Dict):
+def test_update_publisher(client: Client, get_publisher: Dict, get_auth_header):
     new_name = 'NewPublisherName'
 
-    response: Response = client.put(get_publisher.get("url"), data={"name": new_name}, content_type='application/json')
+    response: Response = client.put(
+        get_publisher.get("url"),
+        data={"name": new_name},
+        content_type='application/json',
+        **get_auth_header
+    )
 
     assert response.status_code == HTTPStatus.OK
     assert response.data.get("name") == new_name
 
 
 @pytest.mark.django_db
-def test_delete_publisher(client: Client, get_publisher: Dict):
+def test_delete_publisher(client: Client, get_publisher: Dict, get_auth_header):
     url = get_publisher.get("url")
 
-    response: Response = client.delete(url)
+    response: Response = client.delete(url, **get_auth_header)
     assert response.status_code == HTTPStatus.NO_CONTENT
 
-    response: Response = client.delete(url)
+    response: Response = client.delete(url, **get_auth_header)
     assert response.status_code == HTTPStatus.NOT_FOUND

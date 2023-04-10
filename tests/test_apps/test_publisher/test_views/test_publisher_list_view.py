@@ -28,8 +28,8 @@ def get_publisher(get_publisher_data):
 
 
 @pytest.mark.django_db()
-def test_create_publisher(client: Client, get_publisher_data):
-    response: Response = client.post('/publishers/', data=get_publisher_data)
+def test_create_publisher(client: Client, get_publisher_data, get_auth_header):
+    response: Response = client.post('/publishers/', data=get_publisher_data, **get_auth_header)
 
     assert response.status_code == HTTPStatus.CREATED
 
