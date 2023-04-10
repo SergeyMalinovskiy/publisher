@@ -14,10 +14,10 @@ class Book(models.Model):
 
     main_author = models.ForeignKey(Author, on_delete=models.CASCADE, name=BookAuthorType.MAIN_AUTHOR)
 
-    other_authors = models.ManyToManyField(Author, related_name=BookAuthorType.OTHER_AUTHOR)
+    other_authors = models.ManyToManyField(Author, related_name=BookAuthorType.OTHER_AUTHOR, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "{} - {}".format(self.main_author, self.name)
+        return f"{self.name}"

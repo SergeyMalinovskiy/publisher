@@ -27,6 +27,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     'server.apps.author',
     'server.apps.books',
     'server.apps.publisher',
+    'server.apps.posts',
 
     # Default django apps:
     'django.contrib.auth',
