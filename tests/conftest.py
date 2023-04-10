@@ -8,7 +8,7 @@ It may be also used for extending doctest's context:
 
 import pytest
 from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @pytest.fixture(autouse=True)
@@ -61,13 +61,11 @@ def get_django_user():
 
 @pytest.fixture()
 def get_auth_token(get_django_user):
-    token = Token.objects.create(user=get_django_user)
+    refresh = RefreshToken.for_user(get_django_user)
 
-    yield token.key
-
-    token.delete()
+    return refresh.access_token
 
 
 @pytest.fixture()
 def get_auth_header(get_auth_token):
-    return {"HTTP_AUTHORIZATION": f'Token {get_auth_token}'}
+    return {"HTTP_AUTHORIZATION": f'Bearer {get_auth_token}'}

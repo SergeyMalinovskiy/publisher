@@ -1,8 +1,8 @@
 # serializers
 from rest_framework import serializers
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class LeastOneFieldRequired(object):
@@ -23,7 +23,7 @@ class LeastOneFieldRequired(object):
 
 class TokenAuthenticatedOrReadOnly(object):
     def __call__(self, cls: APIView, *args, **kwargs):
-        setattr(cls, 'authentication_classes', [TokenAuthentication])
+        setattr(cls, 'authentication_classes', [JWTAuthentication])
         setattr(cls, 'permission_classes', [IsAuthenticatedOrReadOnly])
 
         return cls
