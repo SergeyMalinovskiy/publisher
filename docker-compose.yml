@@ -17,6 +17,9 @@ services:
     networks:
       - postgresnet
     env_file: ./config/.env
+# if your need to provide db access from outer scope
+#    ports:
+#      - "5432:5432"
 
   web:
     <<: &web
