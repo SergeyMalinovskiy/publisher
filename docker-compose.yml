@@ -21,10 +21,19 @@ services:
 #    ports:
 #      - "5432:5432"
 
+  redis:
+    image: "redis"
+    networks:
+      - webnet
+# if your need to provide db access from outer scope
+#    ports:
+#      - "6379:6379"
+
   web:
     <<: &web
       # Image name is changed in production:
-      image: "publisher:dev"
+      image: &web-image
+        "publisher:dev"
       build:
         target: development_build
         context: .
@@ -40,10 +49,12 @@ services:
         - django-static:/var/www/django/static
       depends_on:
         - db
-      networks:
+        - redis
+      networks: &web-networks
         - webnet
         - postgresnet
-      env_file: ./config/.env
+      env_file: &web_env
+        - ./config/.env
       environment:
         DJANGO_DATABASE_HOST: db
 
@@ -61,6 +72,17 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  celery:
+    command: celery worker -l INFO
+    image: *web-image
+    depends_on:
+      - web
+    networks: *web-networks
+    env_file: *web_env
+    environment:
+      DJANGO_DATABASE_HOST: db
+      CELERY_BROKER_URL: "redis://redis:6379/0"
 
 # This task is an example of how to extend existing ones:
 #   some_worker:

@@ -24,6 +24,8 @@ python-decouple = "^3.8"
 structlog = "^22.3"
 djangorestframework = "^3.14.0"
 djangorestframework-simplejwt = "^5.2.2"
+celery = {extras = ["reddis"], version = "^5.2.7"}
+redis = "^4.5.4"
 
 
 [tool.poetry.group.dev.dependencies]
