@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,14 +11,24 @@ from server.utils.decorators import TokenAuthenticatedOrReadOnly
 
 @TokenAuthenticatedOrReadOnly()
 class BookListView(APIView):
-    def get(self, request: Request, format=None) -> Response:
+    """
+    Responses for list of books.
+    """
+
+    def get(self, request: Request) -> Response:
+        """
+        Get lists of books.
+        """
         books = Book.objects.all()
 
         serializer = BookSerializer(books, many=True)
 
         return Response(serializer.data)
 
-    def post(self, request: Request, format=None) -> Response:
+    def post(self, request: Request) -> Response:
+        """
+        Create new book.
+        """
         serializer = BookSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -30,12 +40,22 @@ class BookListView(APIView):
 
 @TokenAuthenticatedOrReadOnly()
 class BookDetailView(APIView):
-    def get(self, request: Request, pk, format=None):
+    """
+    Responses for detail view of book.
+    """
+
+    def get(self, request: Request, pk: int) -> Response:
+        """
+        Get book by ID.
+        """
         book = BookRepository().get_by_id(pk)
 
         return Response(BookSerializer(book).data)
 
-    def put(self, request: Request, pk, format=None):
+    def put(self, request: Request, pk: int) -> Response:
+        """
+        Update book.
+        """
         book = BookRepository().get_by_id(pk)
 
         serializer = BookUpdateSerializer(book, data=request.data)
@@ -46,7 +66,10 @@ class BookDetailView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request: Request, pk, format=None):
+    def delete(self, request: Request, pk: int) -> Response:
+        """
+        Delete book.
+        """
         book = BookRepository().get_by_id(pk)
         book.delete()
 
