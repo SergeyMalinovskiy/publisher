@@ -25,8 +25,9 @@ from server.apps.main.views import index
 
 from server.apps.author import  urls as author_urls
 from server.apps.books import  urls as books_urls
-from server.apps.publisher import  urls as publisher_urls
+from server.apps.publisher import urls as publisher_urls
 from server.apps.posts import urls as posts_urls
+from server.apps.subscribes import urls as subscribes_urls
 
 admin.autodiscover()
 
@@ -37,6 +38,7 @@ urlpatterns = [
     path('books/', include(books_urls, namespace='books')),
     path('publishers/', include(publisher_urls, namespace='publishers')),
     path('posts/', include(posts_urls, namespace='posts')),
+    path('subscribes/', include(subscribes_urls, namespace='subscribes')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
