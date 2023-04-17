@@ -1,23 +1,30 @@
-from django.utils.decorators import method_decorator
+from django.http import QueryDict
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import permission_classes as permissions, authentication_classes as auth_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from server.apps.author.models import Author
-from server.apps.author.serializers import AuthorSerializer, AuthorUpdateSerializer
+from server.apps.author.serializers import (
+    AuthorSerializer,
+    AuthorUpdateSerializer,
+)
 from server.apps.author.repository import AuthorRepository
 from server.utils.decorators import TokenAuthenticatedOrReadOnly
 
 
 @TokenAuthenticatedOrReadOnly()
 class AuthorListView(APIView):
+    """Handle list of authors"""
 
-    def get(self, request, format=None) -> Response:
-        authors = Author.objects.all()
+    def get(self, request: Request) -> Response:
+        """Get authors list"""
+        query_params: QueryDict = request.query_params
+
+        authors = Author.objects.filter(
+            name=query_params.get('name', None),
+        )
+
         serializer = AuthorSerializer(authors, many=True)
 
         return Response(serializer.data)
