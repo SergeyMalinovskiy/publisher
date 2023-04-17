@@ -4,8 +4,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from server.apps.subscribes.models import Subscribe
-from server.apps.subscribes.serializers import SubscribeSerializer, CreateSubscribeSerializer
+from server.apps.subscribes.models import Subscribe, Event
+from server.apps.subscribes.serializers import (
+    SubscribeSerializer,
+    CreateSubscribeSerializer,
+    EventSerializer,
+)
+from server.apps.subscribes.tasks import send_subscribe_notification
 
 
 class SubscribesAPIView(APIView):
@@ -15,10 +20,11 @@ class SubscribesAPIView(APIView):
         """Create new subscribe"""
         serializer = CreateSubscribeSerializer(data=request.data)
 
-        print(request.data)
-
         if serializer.is_valid():
             serializer.save()
+
+            # TODO: Необходимо добавить задачу для отправки уведомления о созданной подписке
+            # send_subscribe_notification.delay()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
