@@ -3,7 +3,6 @@ from django.db import models
 from server.common.base_model import BaseModel
 
 
-# Create your models here.
 class Publisher(BaseModel):
     """Publisher model"""
 

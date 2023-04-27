@@ -5,7 +5,6 @@ from server.apps.publisher.models import Publisher
 from server.common.base_model import BaseModel
 
 
-# Create your models here.
 class Post(BaseModel):
     """Post model"""
 

@@ -14,7 +14,6 @@ class BookAuthorType(object):
     other_author: str = 'other_author'
 
 
-# Create your models here.
 class Book(BaseModel):
     """Book model"""
 
