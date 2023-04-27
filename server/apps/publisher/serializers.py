@@ -6,9 +6,11 @@ from server.utils.decorators import LeastOneFieldRequired
 
 
 class PublisherModelSerializer(serializers.ModelSerializer):
-    class Meta:
+    """Some refactior"""
+
+    class Meta(object):
         model = Publisher
-        fields = "__all__"
+        fields = '__all__'
 
 
 @LeastOneFieldRequired()
