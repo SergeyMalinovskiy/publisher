@@ -3,12 +3,14 @@ from typing import Final, final
 
 from django.db import models
 
+from server.common.base_model import BaseModel
+
 #: That's how constants should be defined.
 _POST_TITLE_MAX_LENGTH: Final = 80
 
 
 @final
-class BlogPost(models.Model):
+class BlogPost(BaseModel):
     """
     This model is used just as an example.
 
