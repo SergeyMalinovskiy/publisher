@@ -1,8 +1,10 @@
 from django.db import models
 
+from server.common.base_model import BaseModel
+
 
 # Create your models here.
-class Author(models.Model):
+class Author(BaseModel):
     surname = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
 
