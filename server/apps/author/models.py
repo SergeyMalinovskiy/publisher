@@ -16,4 +16,10 @@ class Author(BaseModel):
 
     def __str__(self) -> str:
         """Returns stringify model"""
-        return '{surname} {name}'.format(surname=self.surname, name=self.name)
+        code = self.license_code
+
+        return '{surname} {name} {code}'.format(
+            surname=self.surname,
+            name=self.name,
+            code=code,
+        )
