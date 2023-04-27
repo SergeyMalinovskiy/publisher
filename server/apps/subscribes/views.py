@@ -1,8 +1,10 @@
 from urllib.request import Request
 
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from server.apps.subscribes.models import Subscribe, Event
 from server.apps.subscribes.serializers import (
@@ -15,6 +17,9 @@ from server.apps.subscribes.tasks import send_subscribe_notification
 
 class SubscribesAPIView(APIView):
     """Subscribes API View class"""
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request: Request, event: str) -> Response:
         """Create new subscribe"""

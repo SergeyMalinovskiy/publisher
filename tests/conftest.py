@@ -5,9 +5,11 @@ It may be also used for extending doctest's context:
 1. https://docs.python.org/3/library/doctest.html
 2. https://docs.pytest.org/en/latest/doctest.html
 """
+from typing import Dict
 
 import pytest
 from django.contrib.auth import get_user_model
+from faker import Faker
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -67,5 +69,11 @@ def get_auth_token(get_django_user):
 
 
 @pytest.fixture()
-def get_auth_header(get_auth_token):
+def get_auth_header(get_auth_token) -> Dict:
     return {"HTTP_AUTHORIZATION": f'Bearer {get_auth_token}'}
+
+
+@pytest.fixture()
+def faker() -> Faker:
+    """Init faker"""
+    return Faker()

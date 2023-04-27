@@ -2,9 +2,10 @@ from django.db import models
 
 from server.apps.subscribes.interfaces.subscribe_method import SubscribeMethod
 from server.apps.subscribes.methods import resolve_subscribe_method
+from server.common.base_model import BaseModel
 
 
-class Subscriber(models.Model):
+class Subscriber(BaseModel):
     """Subscriber model"""
 
     method = models.CharField(max_length=255)
@@ -32,7 +33,7 @@ class Subscriber(models.Model):
         return resolve_subscribe_method(self.method, self.method_data)
 
 
-class Event(models.Model):
+class Event(BaseModel):
     """Event model"""
 
     name = models.CharField(unique=True, max_length=255)
@@ -49,7 +50,7 @@ class Event(models.Model):
         return '{name}'.format(name=self.name)
 
 
-class Subscribe(models.Model):
+class Subscribe(BaseModel):
     """Subscribe model"""
 
     subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
