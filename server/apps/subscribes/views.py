@@ -10,9 +10,7 @@ from server.apps.subscribes.models import Subscribe, Event
 from server.apps.subscribes.serializers import (
     SubscribeSerializer,
     CreateSubscribeSerializer,
-    EventSerializer,
 )
-from server.apps.subscribes.tasks import send_subscribe_notification
 
 
 class SubscribesAPIView(APIView):

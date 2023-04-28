@@ -1,7 +1,5 @@
 from django.db import models
 
-from server.apps.subscribes.interfaces.subscribe_method import SubscribeMethod
-from server.apps.subscribes.methods import resolve_subscribe_method
 from server.common.base_model import BaseModel
 
 
@@ -26,11 +24,6 @@ class Subscriber(BaseModel):
             method=self.method,
             data=self.method_data,
         )
-
-    @property
-    def subscribe_method(self) -> SubscribeMethod:
-        """Returns subscribe method"""
-        return resolve_subscribe_method(self.method, self.method_data)
 
 
 class Event(BaseModel):

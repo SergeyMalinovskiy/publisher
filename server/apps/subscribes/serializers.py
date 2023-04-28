@@ -1,6 +1,9 @@
+from typing import Dict
+
 from rest_framework import serializers
 
 from server.apps.subscribes.models import Subscribe, Event
+from server.common.interfaces.serializer import HasFilterData
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
