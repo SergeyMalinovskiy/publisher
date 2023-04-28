@@ -6,6 +6,8 @@ from server.apps.subscribes.models import Subscriber
 
 registered_subscribe_methods: Dict = {
     'email': EmailSubscribeMethod,
+    'telegram': None,
+    'site': None,
 }
 
 
@@ -22,6 +24,10 @@ class SubscribeMethodService(object):
         method = subscriber.method
         method_data = subscriber.method_data
 
-        subscribe_method_class: type = registered_subscribe_methods.get(method)
+        subscribe_method_class: type = self.get_by_name(method)
 
         return subscribe_method_class(name=method, data=method_data)
+
+    def get_by_name(self, name: str) -> SubscribeMethod:
+        """Get subscribe method class from registered methods"""
+        return registered_subscribe_methods.get(name)

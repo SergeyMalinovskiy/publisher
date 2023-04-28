@@ -19,7 +19,7 @@ def subscriber() -> Subscriber:
     """Create subscriber"""
     subscriber = Subscriber.objects.create(
         method='email',
-        method_data=json.dumps({'email': 'test@email.ru'}),
+        method_data=json.dumps({'data': 'test@email.ru'}),
         is_active=True,
     )
 
@@ -36,4 +36,7 @@ def test_subscriber_email_method(
     """Test subscribe email method"""
     subscribe_method = subscribe_method_service.get_by_subscriber(subscriber)
 
-    assert json.loads(subscribe_method.data).get('email') == 'test@email.ru'
+    assert json.loads(subscribe_method.data).get('data') == 'test@email.ru'
+
+
+def test_subscriber_unknown_method()

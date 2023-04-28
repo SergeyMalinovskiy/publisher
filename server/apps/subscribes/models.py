@@ -19,8 +19,7 @@ class Subscriber(BaseModel):
 
     def __str__(self) -> str:
         """Returns stringify model"""
-        return '({id}): {method} | {data}'.format(
-            id=self.pk,
+        return '({method} | {data}'.format(
             method=self.method,
             data=self.method_data,
         )

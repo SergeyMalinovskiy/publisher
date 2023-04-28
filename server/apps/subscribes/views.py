@@ -6,7 +6,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from server.apps.subscribes.models import Subscribe, Event
+from server.apps.subscribes.logic.services.subscriber_service import (
+    SubscriberService,
+)
+from server.apps.subscribes.models import Subscribe
 from server.apps.subscribes.serializers import (
     SubscribeSerializer,
     CreateSubscribeSerializer,
